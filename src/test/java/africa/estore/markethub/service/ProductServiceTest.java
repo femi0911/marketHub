@@ -22,8 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
-
-
     @Mock
     private ProductRepository productRepository;
     @Mock
@@ -33,29 +31,40 @@ public class ProductServiceTest {
 
     @Test
     public void testCanCreateProductSuccessfully1() {
-        //given
+        AddProductRequest addProductRequest = buildTestProductRequest();
+        Product product = buildMockTestProduct();
+        Mockito.when(modelMapper.map(addProductRequest, Product.class)).thenReturn(product);
+        Mockito.when(productRepository.save(product)).thenReturn(product);
+        Mockito.when(modelMapper.map(product, ProductResponse.class)).thenReturn(buildTestProductResponse());
+        ProductResponse response = productService.addProduct(addProductRequest);
+        assertThat(response).isNotNull();
+        assertThat(response.getCategory()).isEqualTo("Gadget");
+        assertThat(response.getDescription()).isEqualTo("an iphone 18 pro max");
+        assertThat(response.getPrice()).isEqualTo(new BigDecimal("100000"));
+    }
+
+    private static ProductResponse buildTestProductResponse() {
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setCategory("Gadget");
+        productResponse.setDescription("an iphone 18 pro max");
+        productResponse.setPrice(new BigDecimal("100000"));
+        return productResponse;
+    }
+
+    private static Product buildMockTestProduct() {
+        Product product = new Product();
+        product.setCategory("Gadget");
+        product.setDescription("an iphone 18 pro max");
+        product.setPrice(new BigDecimal("100000"));
+        return product;
+    }
+
+    private static AddProductRequest buildTestProductRequest() {
         AddProductRequest addProductRequest = new AddProductRequest();
         addProductRequest.setName("mobile phone");
         addProductRequest.setDescription("an iphone 18 pro max");
         addProductRequest.setCategory("Gadget");
         addProductRequest.setPrice(new BigDecimal("100000"));
-        //when
-        Product product = new Product();
-        product.setCategory("Gadget");
-        product.setDescription("an iphone 18 pro max");
-        product.setPrice(new BigDecimal("100000"));
-        Mockito.when(modelMapper.map(addProductRequest, Product.class)).thenReturn(product);
-        Mockito.when(productRepository.save(product)).thenReturn(product);
-        ProductResponse productResponse = new ProductResponse();
-        productResponse.setCategory("Gadget");
-        productResponse.setDescription("an iphone 18 pro max");
-        productResponse.setPrice(new BigDecimal("100000"));
-        Mockito.when(modelMapper.map(product, ProductResponse.class)).thenReturn(productResponse);
-        ProductResponse response = productService.addProduct(addProductRequest);
-        //check
-        assertThat(response).isNotNull();
-        assertThat(response.getCategory()).isEqualTo("Gadget");
-        assertThat(response.getDescription()).isEqualTo("an iphone 18 pro max");
-        assertThat(response.getPrice()).isEqualTo(new BigDecimal("100000"));
+        return addProductRequest;
     }
 }
