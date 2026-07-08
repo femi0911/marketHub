@@ -13,9 +13,10 @@ public class ProductServiceImpl implements ProductService {
     //TODO: do constructor injection
     @Autowired
     private ProductRepository productRepository;
+    private ModelMapper modelMapper;
+
     @Override
     public ProductResponse addProduct(AddProductRequest addProductRequest) {
-        ModelMapper modelMapper = new ModelMapper();
         Product product = modelMapper.map(addProductRequest, Product.class);
         //TODO: save product media files
         product = productRepository.save(product);
