@@ -1,5 +1,6 @@
 package africa.estore.markethub.integration.cloud;
 
+import africa.estore.markethub.util.TestUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import static africa.estore.markethub.util.TestUtils.getTestMediaFiles;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -35,23 +37,9 @@ public class CloudServiceTest {
             """
     )
     public void testCanUploadFiles() {
-        Path grootFile = Path.of("src/main/resources/assets/groot.mp4");
-        Path gymShirtFile = Path.of("src/main/resources/assets/gym shirt.webp");
-        Path peakMilkTinFile = Path.of("src/main/resources/assets/peak milk (tin).webp");
-        Path peakMilkSachetFile = Path.of("src/main/resources/assets/peak milk sachet.webp");
-        try {
-            List<MultipartFile> files = List.of(
-                    new MockMultipartFile("groot", Files.newInputStream(grootFile)),
-                    new MockMultipartFile("gym shirt", Files.newInputStream(gymShirtFile)),
-                    new MockMultipartFile("peak milk (tin)", Files.newInputStream(peakMilkTinFile)),
-                    new MockMultipartFile("peak milk sachet", Files.newInputStream(peakMilkSachetFile))
-            );
-            List<String> urls = cloudService.upload(files);
-            assertThat(urls).isNotNull();
-            assertThat(urls).isNotEmpty();
-            assertThat(urls.get(0)).containsAnyOf("cloudinary");
-        }catch (IOException ex){
-            ex.printStackTrace();
-        }
+        List<String> urls = cloudService.upload(getTestMediaFiles());
+        assertThat(urls).isNotNull();
+        assertThat(urls).isNotEmpty();
+        assertThat(urls.getFirst()).containsAnyOf("cloudinary");
     }
 }
