@@ -1,12 +1,13 @@
 package africa.estore.markethub.service;
 
 import africa.estore.markethub.dto.request.AddProductRequest;
+import africa.estore.markethub.dto.request.UpdateProductRequest;
 import africa.estore.markethub.dto.response.ProductResponse;
+import africa.estore.markethub.exception.ProductNotFoundException;
 import africa.estore.markethub.model.Product;
 import africa.estore.markethub.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,5 +24,31 @@ public class ProductServiceImpl implements ProductService {
         //TODO: save product media files
         product = productRepository.save(product);
         return modelMapper.map(product, ProductResponse.class);
+    }
+
+    @Override
+    public ProductResponse findProductById(String id) {
+        Product product = getProductById(id);
+        return modelMapper.map(product, ProductResponse.class);
+    }
+
+    @Override
+    public ProductResponse updateProduct(String id, UpdateProductRequest updateProductRequest) {
+        Product product = getProductById(id);
+        modelMapper.map(updateProductRequest, product);
+        //TODO: update product media files
+        product = productRepository.save(product);
+        return modelMapper.map(product, ProductResponse.class);
+    }
+
+    @Override
+    public void deleteProduct(String id) {
+        Product product = getProductById(id);
+        productRepository.delete(product);
+    }
+
+    private Product getProductById(String id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 }

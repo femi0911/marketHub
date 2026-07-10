@@ -26,7 +26,7 @@ public class Product {
     private BigDecimal price;
     private Integer quantity;
     private String category;
-    private List<MultipartFile> productMediaFiles;
+    private List<String> productMediaFiles;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
