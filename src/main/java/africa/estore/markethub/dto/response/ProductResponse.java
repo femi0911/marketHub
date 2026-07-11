@@ -2,7 +2,6 @@ package africa.estore.markethub.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,5 +15,5 @@ public class ProductResponse {
     private BigDecimal price;
     private Integer quantity;
     private String category;
-    private List<MultipartFile> productMediaFiles;
+    private List<String> productMediaFiles;
 }

@@ -33,6 +33,22 @@ public final class TestUtils {
         }
     }
 
+    public static List<MockMultipartFile> getTestMediaFilesForUpload() {
+        try {
+            Path gymShirtFile = Path.of("src/main/resources/assets/gym shirt.webp");
+            Path peakMilkTinFile = Path.of("src/main/resources/assets/peak milk (tin).webp");
+            return List.of(
+                    new MockMultipartFile("productMediaFiles", "gym shirt.webp",
+                            "image/webp", Files.readAllBytes(gymShirtFile)),
+                    new MockMultipartFile("productMediaFiles", "peak milk (tin).webp",
+                            "image/webp", Files.readAllBytes(peakMilkTinFile))
+            );
+        }catch (IOException ex){
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
+        }
+    }
+
     public static ProductResponse buildTestProductResponse() {
         ProductResponse productResponse = new ProductResponse();
         productResponse.setCategory("Gadget");
