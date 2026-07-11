@@ -1,9 +1,10 @@
 package africa.estore.markethub.integration.cloud.cloudinary;
 
+import africa.estore.markethub.config.CloudConfig;
 import africa.estore.markethub.integration.cloud.CloudService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,20 +13,15 @@ import java.util.List;
 import java.util.function.Function;
 
 @Service
+@AllArgsConstructor
 public class CloudServiceImpl implements CloudService {
-    @Value("${cloudinary.api.key}")
-    private String apiKey;
-    @Value("${cloudinary.api.secret}")
-    private String apiSecret;
-    @Value("${cloudinary.api.name}")
-    private String cloudName;
-
+    private final CloudConfig cloudConfig;
     @Override
     public List<String> upload(List<MultipartFile> files) {
         Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-                "cloud_name", cloudName,
-                "api_key", apiKey,
-                "api_secret", apiSecret,
+                "cloud_name", cloudConfig.getName(),
+                "api_key", cloudConfig.getKey(),
+                "api_secret", cloudConfig.getSecret(),
                 "secure", true));
         return files.stream().map(uploadFileWith(cloudinary)).toList();
     }

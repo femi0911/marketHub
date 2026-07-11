@@ -1,9 +1,13 @@
 package africa.estore.markethub.util;
 
+import africa.estore.markethub.dto.request.AddProductRequest;
+import africa.estore.markethub.dto.response.ProductResponse;
+import africa.estore.markethub.model.Product;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -27,5 +31,30 @@ public final class TestUtils {
             ex.printStackTrace();
             throw new RuntimeException(ex);
         }
+    }
+
+    public static ProductResponse buildTestProductResponse() {
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setCategory("Gadget");
+        productResponse.setDescription("an iphone 18 pro max");
+        productResponse.setPrice(new BigDecimal("100000"));
+        return productResponse;
+    }
+
+    public static Product buildMockTestProduct() {
+        Product product = new Product();
+        product.setCategory("Gadget");
+        product.setDescription("an iphone 18 pro max");
+        product.setPrice(new BigDecimal("100000"));
+        return product;
+    }
+
+    public static AddProductRequest buildTestProductRequest() {
+        AddProductRequest addProductRequest = new AddProductRequest();
+        addProductRequest.setName("mobile phone");
+        addProductRequest.setDescription("an iphone 18 pro max");
+        addProductRequest.setCategory("Gadget");
+        addProductRequest.setPrice(new BigDecimal("100000"));
+        return addProductRequest;
     }
 }

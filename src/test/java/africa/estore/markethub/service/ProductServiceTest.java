@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
+import static africa.estore.markethub.util.TestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -113,28 +114,5 @@ public class ProductServiceTest {
         assertThat(response.getPrice()).isEqualTo(new BigDecimal("100000"));
     }
 
-    private static ProductResponse buildTestProductResponse() {
-        ProductResponse productResponse = new ProductResponse();
-        productResponse.setCategory("Gadget");
-        productResponse.setDescription("an iphone 18 pro max");
-        productResponse.setPrice(new BigDecimal("100000"));
-        return productResponse;
-    }
 
-    private static Product buildMockTestProduct() {
-        Product product = new Product();
-        product.setCategory("Gadget");
-        product.setDescription("an iphone 18 pro max");
-        product.setPrice(new BigDecimal("100000"));
-        return product;
-    }
-
-    private static AddProductRequest buildTestProductRequest() {
-        AddProductRequest addProductRequest = new AddProductRequest();
-        addProductRequest.setName("mobile phone");
-        addProductRequest.setDescription("an iphone 18 pro max");
-        addProductRequest.setCategory("Gadget");
-        addProductRequest.setPrice(new BigDecimal("100000"));
-        return addProductRequest;
-    }
 }
