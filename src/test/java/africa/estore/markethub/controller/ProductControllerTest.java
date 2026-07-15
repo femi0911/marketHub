@@ -46,7 +46,7 @@ public class ProductControllerTest {
     )
     public void testCanAddProduct() throws Exception {
         MockMultipartHttpServletRequestBuilder request = multipart("/api/v1/products");
-        getTestMediaFilesForUpload().forEach(request::file);
+        getTestMediaFilesForUpload().forEach((file)->request.file(file));
         mockMvc.perform(request
                         .param("name", "mobile phone")
                         .param("description", "an iphone 18 pro max")

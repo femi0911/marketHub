@@ -9,10 +9,8 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "cloudinary.api")
 @Getter
 @Setter
-public class CloudConfig {
+public class CloudinaryConfig {
     private String key;
     private String secret;
     private String name;
-
-
 }

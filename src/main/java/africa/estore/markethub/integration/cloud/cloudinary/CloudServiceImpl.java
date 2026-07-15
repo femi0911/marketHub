@@ -1,6 +1,6 @@
 package africa.estore.markethub.integration.cloud.cloudinary;
 
-import africa.estore.markethub.config.CloudConfig;
+import africa.estore.markethub.config.CloudinaryConfig;
 import africa.estore.markethub.integration.cloud.CloudService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -15,13 +15,13 @@ import java.util.function.Function;
 @Service
 @AllArgsConstructor
 public class CloudServiceImpl implements CloudService {
-    private final CloudConfig cloudConfig;
+    private final CloudinaryConfig cloudinaryConfig;
     @Override
     public List<String> upload(List<MultipartFile> files) {
         Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-                "cloud_name", cloudConfig.getName(),
-                "api_key", cloudConfig.getKey(),
-                "api_secret", cloudConfig.getSecret(),
+                "cloud_name", cloudinaryConfig.getName(),
+                "api_key", cloudinaryConfig.getKey(),
+                "api_secret", cloudinaryConfig.getSecret(),
                 "secure", true));
         return files.stream().map(uploadFileWith(cloudinary)).toList();
     }
