@@ -25,6 +25,13 @@ public class Transaction {
     private String reference;
     @CreationTimestamp
     private LocalDateTime createdAt;
+    private TransactionStatus status;
 
+    @PrePersist
+    private void generateReference() {
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        //TODO: replace magic numbers
+        this.reference = uuid.substring(uuid.length() - 10, uuid.length() - 1);
+    }
 
 }

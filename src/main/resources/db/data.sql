@@ -1,5 +1,6 @@
 truncate table wallet CASCADE;
 truncate table transaction CASCADE;
+truncate table users CASCADE;
 
 INSERT INTO wallet (id, user_id, balance, created_at, updated_at) VALUES
 ('10a5dbf7-0353-40d3-92a1-cc322485ea2c', '10a5dbf7-0353-40d3-85pd-cc322485ea2c', 3000, '2026-07-15T16:56:36.751971', '2026-07-15T16:56:36.751971'),
@@ -12,3 +13,6 @@ INSERT INTO transaction (id, wallet_id, type, reference, created_at) VALUES
 ('26abd9ac-00b5-4f39-81fd-8da54567f1c6', '10a5dbf7-0353-40d3-92a1-cc322485ea2c', 0, 'efg', '2026-07-15T16:56:36.751971'),
 ('eecca0a9-5030-43fc-8f73-63c2cc77dd2e', '10a5dbf7-0353-40d3-92a1-cc322485eh2c', 1, 'def', '2026-07-15T16:56:36.751971'),
 ('4febe283-7a2d-4292-9ab8-2fcb44d11158', '65d7b3dd-a8fa-4224-9055-02da67ee8361', 0, 'tur', '2026-07-15T16:56:36.751971');
+
+INSERT INTO users (id, wallet_id, email, created_at, updated_at) VALUES
+('10a5dbf7-0353-40d3-85pd-cc322485ea2c', '10a5dbf7-0353-40d3-92a1-cc322485ea2c', 'john@email.com','2026-07-15T16:56:36.751971', '2026-07-15T16:56:36.751971');

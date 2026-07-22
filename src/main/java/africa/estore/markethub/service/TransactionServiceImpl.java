@@ -1,7 +1,11 @@
 package africa.estore.markethub.service;
 
+import africa.estore.markethub.dto.request.CreateTransactionRequest;
 import africa.estore.markethub.dto.response.TransactionResponse;
+import africa.estore.markethub.exception.WalletNotFoundException;
 import africa.estore.markethub.model.Transaction;
+import africa.estore.markethub.model.TransactionStatus;
+import africa.estore.markethub.model.Wallet;
 import africa.estore.markethub.repository.TransactionRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -19,6 +23,8 @@ import java.util.List;
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final ModelMapper modelMapper;
+
+
     @Override
     public List<TransactionResponse> getTransactionsBy(String walletId, int page, int size) {
         if (page < 1) page = 1;
@@ -31,4 +37,14 @@ public class TransactionServiceImpl implements TransactionService {
         });
         return response;
     }
+
+    @Override
+    public TransactionResponse createTransaction(CreateTransactionRequest transactionRequest, Wallet wallet) throws WalletNotFoundException {
+        Transaction transaction = modelMapper.map(transactionRequest, Transaction.class);
+        transaction.setStatus(TransactionStatus.PENDING);
+        transaction.setWallet(wallet);
+        transaction = transactionRepository.save(transaction);
+        return modelMapper.map(transaction, TransactionResponse.class);
+    }
+
 }
