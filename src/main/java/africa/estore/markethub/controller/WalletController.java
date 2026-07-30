@@ -1,6 +1,7 @@
 package africa.estore.markethub.controller;
 
 import africa.estore.markethub.dto.request.FundWalletRequest;
+import africa.estore.markethub.dto.response.PaystackPaymentResponse;
 import africa.estore.markethub.dto.response.TransactionResponse;
 import africa.estore.markethub.dto.response.WalletResponse;
 import africa.estore.markethub.exception.WalletNotFoundException;
@@ -11,6 +12,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,10 +26,10 @@ public class WalletController {
 
     @PostMapping("/{userId}/wallet/fund")
     @ResponseStatus(HttpStatus.OK)
-    public WalletResponse fundWallet(
+    public ResponseEntity<PaystackPaymentResponse> fundWallet(
             @PathVariable @NotBlank(message = "userId is required") String userId,
-            @Valid @RequestBody FundWalletRequest request) {
-        return walletService.createWalletFor(userId);
+            @Valid @RequestBody FundWalletRequest request) throws WalletNotFoundException {
+        return ResponseEntity.ok(walletService.fundWallet(request));
     }
 
     @GetMapping("/{userId}/wallet")
