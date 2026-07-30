@@ -2,6 +2,7 @@ package africa.estore.markethub.service;
 
 import africa.estore.markethub.dto.request.CreateTransactionRequest;
 import africa.estore.markethub.dto.response.TransactionResponse;
+import africa.estore.markethub.exception.ResourceNotFoundException;
 import africa.estore.markethub.exception.WalletNotFoundException;
 import africa.estore.markethub.model.Transaction;
 import africa.estore.markethub.model.TransactionStatus;
@@ -39,12 +40,22 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public TransactionResponse createTransaction(CreateTransactionRequest transactionRequest, Wallet wallet) throws WalletNotFoundException {
+    public Transaction createTransaction(CreateTransactionRequest transactionRequest, Wallet wallet) throws WalletNotFoundException {
         Transaction transaction = modelMapper.map(transactionRequest, Transaction.class);
         transaction.setStatus(TransactionStatus.PENDING);
         transaction.setWallet(wallet);
-        transaction = transactionRepository.save(transaction);
-        return modelMapper.map(transaction, TransactionResponse.class);
+        return transactionRepository.save(transaction);
+    }
+
+    @Override
+    public Transaction getTransactionBy(String reference) throws ResourceNotFoundException {
+        return transactionRepository.findByReference(reference).orElseThrow(
+                ()->new ResourceNotFoundException("failed to find transaction"));
+    }
+
+    @Override
+    public void save(Transaction transaction) {
+        modelMapper.map(transactionRepository.save(transaction), TransactionResponse.class);
     }
 
 }

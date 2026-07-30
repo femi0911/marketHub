@@ -7,6 +7,7 @@ import africa.estore.markethub.dto.response.TransactionResponse;
 import africa.estore.markethub.dto.response.WalletResponse;
 import africa.estore.markethub.exception.WalletNotFoundException;
 import africa.estore.markethub.integration.payment.PaymentService;
+import africa.estore.markethub.model.Transaction;
 import africa.estore.markethub.model.TransactionType;
 import africa.estore.markethub.model.User;
 import africa.estore.markethub.model.Wallet;
@@ -50,8 +51,11 @@ public class WalletServiceImpl implements WalletService {
         Wallet wallet = user.getWallet();
         CreateTransactionRequest transactionRequest = modelMapper.map(fundWalletRequest, CreateTransactionRequest.class);
         transactionRequest.setTransactionType(CREDIT);
-        TransactionResponse transaction = transactionService.createTransaction(transactionRequest, wallet);
-        return paymentService.initializeTransaction(user.getEmail(), transaction.getAmount());
+        Transaction transaction = transactionService.createTransaction(transactionRequest, wallet);
+        PaystackPaymentResponse paymentResponse = paymentService.initializeTransaction(user.getEmail(), fundWalletRequest.getAmount());
+        transaction.setReference(paymentResponse.getData().getReference());
+        transactionService.save(transaction);
+        return paymentResponse;
     }
 
     @Override

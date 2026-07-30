@@ -3,6 +3,7 @@ package africa.estore.markethub.service;
 import africa.estore.markethub.dto.request.CreateTransactionRequest;
 import africa.estore.markethub.dto.response.TransactionResponse;
 import africa.estore.markethub.exception.WalletNotFoundException;
+import africa.estore.markethub.model.Transaction;
 import africa.estore.markethub.model.TransactionType;
 import africa.estore.markethub.model.Wallet;
 import org.junit.jupiter.api.Test;
@@ -40,9 +41,9 @@ public class TransactionServiceTest {
             CreateTransactionRequest transactionRequest = new CreateTransactionRequest();
             transactionRequest.setAmount(50000L);
             transactionRequest.setTransactionType(CREDIT);
-            TransactionResponse transactionResponse = transactionService.createTransaction(transactionRequest, wallet);
-            assertThat(transactionResponse).isNotNull();
-            assertThat(transactionResponse.getReference()).isNotNull();
+            Transaction transaction = transactionService.createTransaction(transactionRequest, wallet);
+            assertThat(transaction).isNotNull();
+            assertThat(transaction.getReference()).isNotNull();
         }catch (WalletNotFoundException ex){
             ex.printStackTrace();
         }

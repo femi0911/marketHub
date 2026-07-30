@@ -32,17 +32,4 @@ public class WalletController {
         return ResponseEntity.ok(walletService.fundWallet(request));
     }
 
-    @GetMapping("/{userId}/wallet")
-    public WalletResponse getWalletBalance(
-            @PathVariable @NotBlank(message = "userId is required") String userId) {
-        return walletService.createWalletFor(userId);
-    }
-
-    @GetMapping("/{userId}/wallet/transactions")
-    public List<TransactionResponse> getTransactionHistory(
-            @PathVariable @NotBlank(message = "userId is required") String userId,
-            @RequestParam(defaultValue = "0") @Min(value = 0, message = "page must be >= 0") int page,
-            @RequestParam(defaultValue = "10") @Min(value = 1, message = "size must be >= 1") int size) throws WalletNotFoundException {
-        return walletService.retrieveTransactionsFor(userId, page, size);
-    }
 }
