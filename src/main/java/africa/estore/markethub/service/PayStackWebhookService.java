@@ -2,6 +2,7 @@ package africa.estore.markethub.service;
 
 import africa.estore.markethub.dto.request.PaystackWebhookPayload;
 import africa.estore.markethub.exception.ResourceNotFoundException;
+import africa.estore.markethub.exception.WalletNotFoundException;
 import africa.estore.markethub.model.Transaction;
 import africa.estore.markethub.model.TransactionStatus;
 import lombok.AllArgsConstructor;
@@ -14,12 +15,13 @@ public class PayStackWebhookService {
     private final TransactionService transactionService;
     private final WalletService walletService;
     private final ObjectMapper objectMapper;
-    public void updateTransaction(String payload) throws ResourceNotFoundException {
+    public void updateTransaction(String payload) throws ResourceNotFoundException, WalletNotFoundException {
         PaystackWebhookPayload paystackWebhookPayload =
                 objectMapper.readValue(payload, PaystackWebhookPayload.class);
         String reference = paystackWebhookPayload.getData().getReference();
         Transaction transaction = transactionService.getTransactionBy(reference);
         if (paystackWebhookPayload.getData().getStatus().equalsIgnoreCase("success")) {
+            walletService.updateWallet(transaction.getWallet().getId(), transaction.getAmount().longValue());
             transaction.setStatus(TransactionStatus.COMPLETED);
         }else {
             transaction.setStatus(TransactionStatus.FAILED);

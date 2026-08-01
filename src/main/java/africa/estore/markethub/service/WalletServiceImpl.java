@@ -8,7 +8,6 @@ import africa.estore.markethub.dto.response.WalletResponse;
 import africa.estore.markethub.exception.WalletNotFoundException;
 import africa.estore.markethub.integration.payment.PaymentService;
 import africa.estore.markethub.model.Transaction;
-import africa.estore.markethub.model.TransactionType;
 import africa.estore.markethub.model.User;
 import africa.estore.markethub.model.Wallet;
 import africa.estore.markethub.repository.WalletRepository;
@@ -68,5 +67,12 @@ public class WalletServiceImpl implements WalletService {
         return walletRepository.findById(walletId)
                 .orElseThrow(() -> new WalletNotFoundException(
                         String.format("wallet with id %s not found", walletId)));
+    }
+    @Override
+    public void updateWallet(String walletId, long amount) throws WalletNotFoundException {
+        Wallet wallet = getWalletWith(walletId);
+        wallet.setBalance(amount);
+        modelMapper.map(walletRepository.save(wallet), WalletResponse.class);
+
     }
 }

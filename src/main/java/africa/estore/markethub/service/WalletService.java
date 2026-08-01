@@ -17,4 +17,5 @@ public interface WalletService {
     PaystackPaymentResponse fundWallet(FundWalletRequest fundWalletRequest) throws WalletNotFoundException;
     WalletResponse getWallet(String walletId) throws WalletNotFoundException;
     Wallet getWalletWith(String walletId) throws WalletNotFoundException;
+    void updateWallet(String walletId, long amount) throws WalletNotFoundException;
 }

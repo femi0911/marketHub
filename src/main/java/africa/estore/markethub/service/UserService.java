@@ -4,4 +4,6 @@ import africa.estore.markethub.model.User;
 
 public interface UserService {
     User getUser(String userId);
+
+    User getUserBy(String username);
 }
